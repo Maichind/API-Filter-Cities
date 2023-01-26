@@ -50,20 +50,24 @@ def getCities(parametros):
                             'latitude' : city["lat"],
                             'longitude' : city["long"],
                             'score' : score        })
+            
+
         scores.sort()
-        #print(scores)    
-        minimo = min(scores)
-        maximo = max(scores)    
+        #print(scores)
+        if len(scores) > 0:    
+            minimo = min(scores)
+            maximo = max(scores)    
 
-        for j in coincidences:
-            j['score'] = 1 - (j['score'] * minimo / maximo)
+            for j in coincidences:
+                j['score'] = 1 - (j['score'] * minimo / maximo)
 
-        results = sorted(coincidences, key=lambda i: i['score'], reverse=True)
+            results = sorted(coincidences, key=lambda i: i['score'], reverse=True)
+            
+            # Muestra de coincidencias
+            response = jsonify({"search": [ results ]})
+            return response
+        return jsonify({"search": [ ]})
 
-        # Muestra de coincidencias
-        response = jsonify({"search": [ results ]})
-        return response
-    return notFound()
 
 
 #----------------ERROR-----------------------
